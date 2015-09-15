@@ -22,4 +22,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 EXPOSE 8983
 WORKDIR /opt/solr
 USER $SOLR_USER
+RUN usermod -u 1000 $SOLR_USER
+RUN usermod -G staff $SOLR_USER
+
 CMD ["/bin/bash", "-c", "/opt/solr/bin/solr -f"]
