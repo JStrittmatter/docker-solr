@@ -11,6 +11,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get -y install lsof && \
   groupadd -r $SOLR_USER && \
   useradd -r -g $SOLR_USER $SOLR_USER && \
+  usermod -u 1000 $SOLR_USER && \
+  usermod -G staff $SOLR_USER && \
   mkdir -p /opt && \
   wget -nv --output-document=/opt/$SOLR.tgz http://www.us.apache.org/dist/lucene/solr/$SOLR_VERSION/$SOLR.tgz && \
   tar -C /opt --extract --file /opt/$SOLR.tgz && \
@@ -22,7 +24,5 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 EXPOSE 8983
 WORKDIR /opt/solr
 USER $SOLR_USER
-RUN usermod -u 1000 $SOLR_USER
-RUN usermod -G staff $SOLR_USER
 
 CMD ["/bin/bash", "-c", "/opt/solr/bin/solr -f"]
